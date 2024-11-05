@@ -1,15 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
+//Петровский, Ермаков лаб. №4 вариант 9
 
 package com.mycompany.java_lab_4;
 import Classes.UI;
-/**
- *
- * @author ermak
- */
-public class Java_lab_4 {
 
+public class Java_lab_4 {
+    /**
+    *Точка входа
+    */
     public static void main(String[] args) {
         UI app = new UI();
         app.startApplication();

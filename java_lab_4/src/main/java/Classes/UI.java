@@ -1,4 +1,5 @@
 package Classes;
+import java.io.FileWriter;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -20,6 +21,11 @@ public class UI {
     static private final String _messErr = "The pattern of numbers -  0-9.0-9 or"
             + " 0-9.(1-9)(0-9)";
     
+    static public final String _messPath = "Enter path";
+    
+    static public final String _messPathError = "Wrong path";
+            
+    static public final String _messWriteErr = "Can't write in file";
     /**
      * Конструктор по умолчанию
      */
@@ -40,10 +46,18 @@ public class UI {
            }
             System.out.println(_messErr);
         }while(!JavaQueue.stringDoublVer(userInput));
-        Vector<Double> mass = JavaQueue.stringToVector(userInput);
+        Vector<JavaDouble> mass = JavaQueue.stringToVector(userInput);
         JavaQueue queue = new JavaQueue(mass);
         queue.sort();
-        queue.writeIntoFile();
+        System.out.println(_messPath);
+        userInput = scanInput();
+        FileWriter writer = FileWorker.isOpen(userInput);
+        while (writer == null){
+            System.out.println(_messPathError);
+            System.out.println(_messPath);
+            userInput = scanInput();
+        }
+        FileWorker.write(writer, queue);
     }
     
     /**

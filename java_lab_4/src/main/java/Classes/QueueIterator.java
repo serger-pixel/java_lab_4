@@ -1,7 +1,10 @@
 package Classes;
 import java.util.Iterator;
 
-public class QueueIterator implements Iterator<Double>{
+/**
+ * Класс итератора очереди
+ */
+public class QueueIterator implements Iterator<JavaDouble>{
     /**
      * Локальная копия очереди
      */
@@ -21,7 +24,7 @@ public class QueueIterator implements Iterator<Double>{
      * @return элемент очереди
      */
     @Override
-    public Double next() {
+    public JavaDouble next() {
         return localQueue.remove();
     }
 

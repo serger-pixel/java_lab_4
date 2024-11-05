@@ -5,20 +5,11 @@ import java.util.Iterator;
 import java.util.regex.Pattern;
 import java.util.Queue;
 import java.util.Vector;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.FileWriter;
 
 /**
  * Класс очереди
  */
-public class JavaQueue implements Queue<Double>{
-    /**
-     * Регулярное выражения для проверки дробного числа
-     */
-    static public String _regDouble = "^((([1-9]{1,13})([0]*))|([0]{1}))(\\.[0-9]*)?";
+public class JavaQueue implements Queue<JavaDouble>{
     /**
      * Индекс первого элемента
      */
@@ -26,25 +17,25 @@ public class JavaQueue implements Queue<Double>{
     /**
      * Минимальное значение
      */
-    static public Double minEl= 0.0;    
+    static public JavaDouble minEl= new JavaDouble();    
     /**
      * Внутрений контейнер
      */
-    private Vector<Double> container;
+    private Vector<JavaDouble> container;
     
     /**
      * Конструктор по умолчанию
      */
     public JavaQueue(){
-        container =  new Vector<Double>();
+        container =  new Vector<JavaDouble>();
     }
     
     /**
      * Конструктор с параметрами
      * @param seq последовательность с дробными числами
      */
-    public JavaQueue(Vector<Double> seq){
-        container = new Vector<Double>();
+    public JavaQueue(Vector<JavaDouble> seq){
+        container = new Vector<JavaDouble>();
         container.addAll(seq);
     }
 
@@ -74,7 +65,7 @@ public class JavaQueue implements Queue<Double>{
      * @return результат выполнения операции
      */
     @Override
-    public boolean addAll(Collection<? extends Double> c) {
+    public boolean addAll(Collection<? extends JavaDouble> c) {
         return container.addAll(c);
     }
 
@@ -168,8 +159,8 @@ public class JavaQueue implements Queue<Double>{
      * @return первый элемент очереди
      */
     @Override
-    public Double remove(){
-        Double el = container.firstElement();
+    public JavaDouble remove(){
+        JavaDouble el = container.firstElement();
         container.remove(_firstInd);
         return el;
     }
@@ -179,7 +170,7 @@ public class JavaQueue implements Queue<Double>{
      * @return первый элемент очереди
      */
     @Override
-    public Double poll(){
+    public JavaDouble poll(){
         if (container.isEmpty()){
             return null;
         }
@@ -191,7 +182,7 @@ public class JavaQueue implements Queue<Double>{
      * @return первый элемен
      */
     @Override
-    public Double peek(){
+    public JavaDouble peek(){
         if (container.isEmpty()){
             return null;
         }
@@ -203,7 +194,7 @@ public class JavaQueue implements Queue<Double>{
      * @return первый элемен
      */
     @Override
-    public Double element(){
+    public JavaDouble element(){
         return container.firstElement();
     }
     
@@ -213,7 +204,7 @@ public class JavaQueue implements Queue<Double>{
      * @return 
      */
     @Override
-    public boolean add(Double el){
+    public boolean add(JavaDouble el){
         return container.add(el);
     }
     
@@ -223,7 +214,7 @@ public class JavaQueue implements Queue<Double>{
      * @return результат вставки
      */
     @Override
-    public boolean offer(Double el){
+    public boolean offer(JavaDouble el){
         try{
             return container.add(el);
         }
@@ -240,32 +231,24 @@ public class JavaQueue implements Queue<Double>{
     static public boolean stringDoublVer(String input){
         String[] elements = input.split(" ");
         for (var el: elements){
-            if (!doubleVer(el)){
+            if (!JavaDouble.doubleVer(el)){
                 return false;
             }
         }
         return true;
     }
     
-    /**
-     * Проверка, является ли строчка дробным числом
-     * @param value строчка, включающая значение элемента
-     * @return результат проверки
-     */
-    static public boolean doubleVer(String value){
-       return Pattern.matches(_regDouble, value);
-    }
-    
+   
     /**
      * Преобразование строки в вектор
      * @param input строчка со значениями
      * @return 
      */
-    static public Vector<Double> stringToVector(String input){
-        Vector<Double> localContainer = new Vector<Double>();
+    static public Vector<JavaDouble> stringToVector(String input){
+        Vector<JavaDouble> localContainer = new Vector<JavaDouble>();
         String[] elements = input.split(" ");
         for (var el: elements){
-            localContainer.add(Double.parseDouble(el));
+            localContainer.add(new JavaDouble(Double.parseDouble(el)));
         }
         return localContainer;
     }
@@ -274,12 +257,12 @@ public class JavaQueue implements Queue<Double>{
      * Нахождение максимального элемента
      * @return максимальный элемент
      */
-    public Double maxEl(){
-        Double max = minEl;
+    public JavaDouble maxEl(){
+        JavaDouble max = minEl;
         QueueIterator localIterator = iterator();
         while(localIterator.hasNext()){
-            Double localEl = localIterator.next();
-            if (max <= localEl){
+            JavaDouble localEl = localIterator.next();
+            if (max.getValue() <= localEl.getValue()){
                 max = localEl;
             }
         }
@@ -290,35 +273,12 @@ public class JavaQueue implements Queue<Double>{
      * Сортировка очереди(самый большой элемент на первом месте)
      */
     public void sort(){
-        Double el = peek();
-        Double max = maxEl();
-        while(el != max){
+        JavaDouble el = peek();
+        JavaDouble max = maxEl();
+        while(el.getValue() != max.getValue()){
             el = remove();
             add(el);
             el = peek();
         }
-    }
-    
-    /**
-     * Запись результата сортировки в файл
-     */
-    public void writeIntoFile(){
-        try{
-            FileWriter writer = new FileWriter("./src/main/java/results/data.txt", false);
-//            DataOutputStream file= new DataOutputStream(new FileOutputStream("./src/main/java/results/data.txt"));
-            QueueIterator localIterator = iterator();
-            while(localIterator.hasNext()){
-                writer.write((localIterator.next()).toString());
-                writer.write(" ");
-                }
-            writer.flush();
-        }
-        catch(FileNotFoundException ex){
-            System.out.println("File is not founded");
-        }
-        catch(IOException ex){
-            System.out.println("Failed to make a record");
-        }
-        
     }
 }
