@@ -51,13 +51,12 @@ public class UI {
         queue.sort();
         System.out.println(_messPath);
         userInput = scanInput();
-        FileWriter writer = FileWorker.isOpen(userInput);
-        while (writer == null){
+        while (!FileWorker.isOpen(userInput)){
             System.out.println(_messPathError);
             System.out.println(_messPath);
             userInput = scanInput();
         }
-        FileWorker.write(writer, queue);
+        FileWorker.write(userInput, queue);
     }
     
     /**
